@@ -13,7 +13,7 @@ class UserListScreen extends StatefulWidget {
 class _UserListScreenState extends State<UserListScreen> {
   final ScrollController _scrollController = ScrollController();
   String? dropdownvalue;
-
+  bool _isPopupMenuVisible = false;
   // List of items in our dropdown menu
   var items = [
     'Select',
@@ -142,38 +142,34 @@ class _UserListScreenState extends State<UserListScreen> {
                                 ],
                               ),
                               PopupMenuButton(
+                                onSelected: (String item) {
+                                  if (item == 'Delete') {
+                                    int userId = user.id;
+                                    context
+                                        .read<UserProvider>()
+                                        .deleteUser(userId);
+                                    // Set popup menu visibility to false after press button
+                                    setState(() {
+                                      _isPopupMenuVisible = false;
+                                    });
+                                  }
+                                },
                                 itemBuilder: (BuildContext context) {
                                   return items.map((String item) {
                                     return PopupMenuItem(
                                       value: item,
-                                      child: Container(
-                                        child: InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              dropdownvalue = item;
-                                              if (item == 'Delete') {
-                                                // Get the user ID and call the delete function
-                                                int userId = user.id;
-                                                context
-                                                    .read<UserProvider>()
-                                                    .deleteUser(userId);
-                                              }
-                                            });
-                                          },
-                                          child: Text(
-                                            item,
-                                            style: TextStyle(
-                                              color: item == 'Delete'
-                                                  ? Color(Constant.redFF0606)
-                                                  : Color(Constant.black32343E),
-                                            ),
-                                          ),
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(
+                                          color: item == 'Delete'
+                                              ? Color(Constant.redFF0606)
+                                              : Color(Constant.black32343E),
                                         ),
                                       ),
                                     );
                                   }).toList();
                                 },
-                              )
+                              ),
                             ],
                           ),
                           SizedBox(
