@@ -28,4 +28,16 @@ class UserProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
+
+  // Delete user
+  Future<void> deleteUser(int userId) async {
+    try {
+      await _apiService.deleteUser(userId);
+      // Remove the user from the local list
+      _users.removeWhere((user) => user.id == userId);
+      notifyListeners();
+    } catch (e) {
+      print('Error deleting user: $e');
+    }
+  }
 }
