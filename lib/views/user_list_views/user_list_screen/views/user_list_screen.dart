@@ -151,6 +151,13 @@ class _UserListScreenState extends State<UserListScreen> {
                                           onTap: () {
                                             setState(() {
                                               dropdownvalue = item;
+                                              if (item == 'Delete') {
+                                                // Get the user ID and call the delete function
+                                                int userId = user.id;
+                                                context
+                                                    .read<UserProvider>()
+                                                    .deleteUser(userId);
+                                              }
                                             });
                                           },
                                           child: Text(

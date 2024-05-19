@@ -5,6 +5,7 @@ import '../model/user_model.dart';
 import '../utils/api.dart';
 
 class UserService {
+  // Get User
   Future<List<UserModel>> getUsers(
       {required int page, required int perPage}) async {
     String apiUrl = '$apiUser?per_page=$perPage&page=$page';
@@ -19,6 +20,16 @@ class UserService {
       return users;
     } else {
       throw Exception('Failed to load users');
+    }
+  }
+
+  // Delete User
+  Future<void> deleteUser(int userId) async {
+    try {
+      // Send delete request to server
+      await http.delete(Uri.parse('$apiUser/$userId'));
+    } catch (e) {
+      throw Exception('Error deleting user: $e');
     }
   }
 }
