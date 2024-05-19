@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:test_pt_maimaid/introduction_views/splash_screen/views/splash_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:test_pt_maimaid/views/introduction_views/splash_screen/views/splash_screen.dart';
 
+import 'provider/user_provider.dart';
 import 'utils/constant.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UserProvider>(
+          create: (context) => UserProvider(),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

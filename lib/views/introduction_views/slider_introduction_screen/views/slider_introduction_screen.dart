@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test_pt_maimaid/views/user_list_views/user_list_screen/views/user_list_screen.dart';
 
-import '../../../utils/constant.dart';
+import '../../../../utils/constant.dart';
 
 class ImageSliderWithDots extends StatefulWidget {
   const ImageSliderWithDots({super.key});
@@ -43,7 +44,6 @@ class _ImageSliderWithDotsState extends State<ImageSliderWithDots> {
 
   @override
   Widget build(BuildContext context) {
-    Constant constant = Constant();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(18.0),
@@ -156,7 +156,12 @@ class _ImageSliderWithDotsState extends State<ImageSliderWithDots> {
                         minimumSize: Size(450.w, 50.h),
                         backgroundColor: Color(Constant.orangeFF7622)),
                     onPressed: () {
-                      // Implement Get Started functionality here
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserListScreen(),
+                          ),
+                          (route) => false);
                     },
                     child: Text(
                       "Get Started",
