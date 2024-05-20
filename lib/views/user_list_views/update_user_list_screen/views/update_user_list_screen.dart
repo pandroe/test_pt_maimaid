@@ -1,28 +1,77 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../model/user_model.dart';
 import '../../../../provider/user_provider.dart';
 import '../../../../utils/constant.dart';
 import '../../../condition_status_views/status_successful_screen/views/status_succesful_screen.dart';
 
-class AddUserListScreen extends StatefulWidget {
-  const AddUserListScreen({Key? key}) : super(key: key);
+class UpdateUserListScreen extends StatefulWidget {
+  final UserModel user;
+  const UpdateUserListScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<AddUserListScreen> createState() => _AddUserListScreenState();
+  State<UpdateUserListScreen> createState() => _UpdateUserListScreenState();
 }
 
-class _AddUserListScreenState extends State<AddUserListScreen> {
-  var thisJob = ['Front End', 'Back End', 'Data Analyst'];
+class _UpdateUserListScreenState extends State<UpdateUserListScreen> {
+  var thisJob = [
+    'Front End',
+    'Back End',
+    'Data Analyst',
+  ];
+
   String? selectedJob;
-  late String name;
   final _formKey = GlobalKey<FormState>();
+  late TextEditingController _nameController;
+  late TextEditingController _jobController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(
+        text: '${widget.user.firstName} ${widget.user.lastName}');
+    _jobController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _jobController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _updateUser() async {
+    if (_formKey.currentState!.validate()) {
+      final name = _nameController.text;
+      final job = _jobController.text;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StatusSuccesfulScreen(
+              isCreate: false,
+              isUpdate: true,
+            ),
+          ));
+
+      try {
+        await context
+            .read<UserProvider>()
+            .updateUser(widget.user.id, name, job);
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update user: $error')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create User'),
+        title: Text('Update User'),
         leading: Row(
           children: [
             SizedBox(
@@ -64,11 +113,7 @@ class _AddUserListScreenState extends State<AddUserListScreen> {
                 height: 10.h,
               ),
               TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    name = value;
-                  });
-                },
+                controller: _nameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a name';
@@ -130,7 +175,7 @@ class _AddUserListScreenState extends State<AddUserListScreen> {
                           ).r,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(18.0).r,
+                          padding: const EdgeInsets.all(18.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -212,22 +257,11 @@ class _AddUserListScreenState extends State<AddUserListScreen> {
                     onPressed: () {
                       // Validate form
                       if (_formKey.currentState!.validate()) {
-                        // Panggil createUser dari provider
-                        Provider.of<UserProvider>(context, listen: false)
-                            .createUser(name, selectedJob!);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StatusSuccesfulScreen(
-                              isCreate: true,
-                              isUpdate: false,
-                            ),
-                          ),
-                        );
+                        _updateUser();
                       }
                     },
                     child: Text(
-                      'Create'.toUpperCase(),
+                      'Update'.toUpperCase(),
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Color(Constant.whiteFFFFFF),

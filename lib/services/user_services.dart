@@ -50,4 +50,21 @@ class UserService {
       throw Exception('Failed to create user');
     }
   }
+
+// Update User
+  Future<Map<String, dynamic>> updateUser(
+      int userId, String name, String job) async {
+    final response = await http.put(Uri.parse('$apiUser/$userId'), body: {
+      'name': name,
+      'job': job,
+    });
+
+    if (response.statusCode == 200) {
+      print('User updated successfully: ${json.decode(response.body)}');
+      return json.decode(response.body);
+    } else {
+      print('Failed to update user. Status code: ${response.statusCode}');
+      throw Exception('Failed to update user');
+    }
+  }
 }

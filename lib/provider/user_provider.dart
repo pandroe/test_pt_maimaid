@@ -55,4 +55,27 @@ class UserProvider extends ChangeNotifier {
       throw error;
     }
   }
+
+  // Update User
+  Future<void> updateUser(int userId, String name, String job) async {
+    try {
+      await _apiService.updateUser(userId, name, job);
+      _users = _users.map((user) {
+        if (user.id == userId) {
+          return UserModel(
+            id: user.id,
+            email: user.email,
+            firstName: name.split(' ')[0],
+            lastName: name.split(' ').length > 1 ? name.split(' ')[1] : '',
+            avatar: user.avatar,
+          );
+        }
+        return user;
+      }).toList();
+      notifyListeners();
+    } catch (error) {
+      print('Error updating user: $error');
+      throw error;
+    }
+  }
 }

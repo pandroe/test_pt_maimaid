@@ -6,6 +6,7 @@ import 'package:test_pt_maimaid/views/user_list_views/add_user_list_screen/views
 import '../../../../provider/user_provider.dart';
 import '../../../../utils/constant.dart';
 import '../../../condition_status_views/status_successful_screen/views/status_succesful_screen.dart';
+import '../../update_user_list_screen/views/update_user_list_screen.dart';
 
 class UserListScreen extends StatefulWidget {
   @override
@@ -229,6 +230,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                                           builder: (context) =>
                                                               StatusSuccesfulScreen(
                                                             isCreate: false,
+                                                            isUpdate: false,
                                                           ),
                                                         ),
                                                       );
@@ -248,6 +250,19 @@ class _UserListScreenState extends State<UserListScreen> {
                                             ),
                                           );
                                         },
+                                      );
+                                    } else if (item == 'Update') {
+                                      setState(() {
+                                        _isPopupMenuVisible = false;
+                                      });
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              UpdateUserListScreen(
+                                            user: user,
+                                          ),
+                                        ),
                                       );
                                     }
                                   },

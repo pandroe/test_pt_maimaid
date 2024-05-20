@@ -8,8 +8,9 @@ import '../../../../utils/constant.dart';
 
 class StatusSuccesfulScreen extends StatelessWidget {
   final bool isCreate;
+  final bool isUpdate;
 
-  const StatusSuccesfulScreen({required this.isCreate});
+  const StatusSuccesfulScreen({required this.isCreate, required this.isUpdate});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,11 @@ class StatusSuccesfulScreen extends StatelessWidget {
               height: 12.h,
             ),
             Text(
-              isCreate ? 'Create Successful' : 'Delete Successful',
+              isCreate
+                  ? 'Create Successful'
+                  : isUpdate
+                      ? 'Update Successful'
+                      : 'Delete Successful',
               style: TextStyle(fontSize: 18.sp),
             ),
             SizedBox(
