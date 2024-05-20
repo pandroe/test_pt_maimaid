@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:test_pt_maimaid/views/user_list_views/add_user_list_screen/views/add_user_list_screen.dart';
 
 import '../../../../provider/user_provider.dart';
 import '../../../../utils/constant.dart';
@@ -70,7 +71,13 @@ class _UserListScreenState extends State<UserListScreen> {
           ),
           actions: [
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddUserListScreen(),
+                    ));
+              },
               child: Container(
                 height: 40.h,
                 width: 40.w,
@@ -220,7 +227,9 @@ class _UserListScreenState extends State<UserListScreen> {
                                                         context,
                                                         MaterialPageRoute(
                                                           builder: (context) =>
-                                                              StatusSuccesfulScreen(),
+                                                              StatusSuccesfulScreen(
+                                                            isCreate: false,
+                                                          ),
                                                         ),
                                                       );
                                                     },

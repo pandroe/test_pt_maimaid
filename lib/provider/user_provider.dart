@@ -40,4 +40,19 @@ class UserProvider extends ChangeNotifier {
       print('Error deleting user: $e');
     }
   }
+
+  // Create User
+  Future<void> createUser(String name, String job) async {
+    try {
+      // Panggil method createUser dari service
+      await _apiService.createUser(name, job);
+      // Panggil notifyListeners untuk memberi tahu listener bahwa state telah berubah
+      notifyListeners();
+    } catch (error) {
+      // Tangani kesalahan jika terjadi
+      print('Error creating user: $error');
+      // Atau Anda bisa melempar kembali kesalahan ini
+      throw error;
+    }
+  }
 }
