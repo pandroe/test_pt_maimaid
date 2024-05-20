@@ -40,4 +40,42 @@ class UserProvider extends ChangeNotifier {
       print('Error deleting user: $e');
     }
   }
+
+  // Create User
+  Future<void> createUser(String name, String job) async {
+    try {
+      // Panggil method createUser dari service
+      await _apiService.createUser(name, job);
+      // Panggil notifyListeners untuk memberi tahu listener bahwa state telah berubah
+      notifyListeners();
+    } catch (error) {
+      // Tangani kesalahan jika terjadi
+      print('Error creating user: $error');
+      // Atau Anda bisa melempar kembali kesalahan ini
+      throw error;
+    }
+  }
+
+  // Update User
+  Future<void> updateUser(int userId, String name, String job) async {
+    try {
+      await _apiService.updateUser(userId, name, job);
+      _users = _users.map((user) {
+        if (user.id == userId) {
+          return UserModel(
+            id: user.id,
+            email: user.email,
+            firstName: name.split(' ')[0],
+            lastName: name.split(' ').length > 1 ? name.split(' ')[1] : '',
+            avatar: user.avatar,
+          );
+        }
+        return user;
+      }).toList();
+      notifyListeners();
+    } catch (error) {
+      print('Error updating user: $error');
+      throw error;
+    }
+  }
 }

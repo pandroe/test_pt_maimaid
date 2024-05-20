@@ -1,17 +1,17 @@
+// Di StatusSuccesfulScreen
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:test_pt_maimaid/views/user_list_views/user_list_screen/views/user_list_screen.dart';
 import '../../../../utils/constant.dart';
 
-class StatusSuccesfulScreen extends StatefulWidget {
-  const StatusSuccesfulScreen({super.key});
+class StatusSuccesfulScreen extends StatelessWidget {
+  final bool isCreate;
+  final bool isUpdate;
 
-  @override
-  State<StatusSuccesfulScreen> createState() => _StatusSuccesfulScreenState();
-}
+  const StatusSuccesfulScreen({required this.isCreate, required this.isUpdate});
 
-class _StatusSuccesfulScreenState extends State<StatusSuccesfulScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +21,19 @@ class _StatusSuccesfulScreenState extends State<StatusSuccesfulScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Lottie.asset(
-                'assets/icons/lottie/status/check_status_successful.json',
-                frameRate: FrameRate.max,
-                height: 100.h),
+              'assets/icons/lottie/status/check_status_successful.json',
+              frameRate: FrameRate.max,
+              height: 100.h,
+            ),
             SizedBox(
               height: 12.h,
             ),
             Text(
-              'Delete Successful',
+              isCreate
+                  ? 'Create Successful'
+                  : isUpdate
+                      ? 'Update Successful'
+                      : 'Delete Successful',
               style: TextStyle(fontSize: 18.sp),
             ),
             SizedBox(
@@ -36,17 +41,27 @@ class _StatusSuccesfulScreenState extends State<StatusSuccesfulScreen> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20).r),
-                  minimumSize: Size(double.infinity, 55.h),
-                  backgroundColor: Color(Constant.orangeFF7622)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20).r,
+                ),
+                minimumSize: Size(double.infinity, 55.h),
+                backgroundColor: Color(Constant.orangeFF7622),
+              ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserListScreen(),
+                  ),
+                  (route) => false,
+                );
               },
               child: Text(
                 "Ok".toUpperCase(),
                 style: TextStyle(
-                    fontSize: 14.sp, color: Color(Constant.whiteFFFFFF)),
+                  fontSize: 14.sp,
+                  color: Color(Constant.whiteFFFFFF),
+                ),
               ),
             ),
           ],
